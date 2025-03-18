@@ -1,0 +1,13 @@
+<!-- templates/user/welcome_email.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome!</title>
+</head>
+<body>
+    <h2>Hello {{ username }},</h2>
+    <p>Thank you for signing up! Please activate your account by clicking the link below:</p>
+    <p><a href="{{ activation_url }}">Activate Account</a></p>
+    <p>If you didn't sign up, please ignore this email.</p>
+</body>
+</html>

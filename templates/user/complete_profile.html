@@ -1,7 +1,8 @@
 <!-- templates/user/complete_profile.html -->
 <h1>Complete Your Profile</h1>
 
-<form method="post" enctype="multipart/form-data">  <!-- Important: enctype for file uploads -->
+
+<form method="post">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Update Profile</button>
