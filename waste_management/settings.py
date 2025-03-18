@@ -87,16 +87,16 @@ DATABASES = {
 }
 '''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'waste_management',
-        'USER': 'postgres',
-        'PASSWORD': 'aditya',
-        'HOST': 'localhost',  
-        'PORT': '5432',  
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'waste_management',
+#         'USER': 'postgres',
+#         'PASSWORD': 'aditya',
+#         'HOST': 'localhost',  
+#         'PORT': '5432',  
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': os.environ['DB_ENGINE'],
