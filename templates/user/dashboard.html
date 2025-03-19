@@ -1,11 +1,184 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-</head>
-<body>
-    <h2>Welcome, {{ user.username }}</h2>
-    <p>Your email: {{ user.email }}</p>
-    <p><a href="{% url 'logout' %}">Logout</a></p>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="callout side-bar show-for-large">
+    <div class="side-nav">
+        <ul class="menu vertical">
+            <li class="logo-mark"><a href="#"></a></li>
+            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-paper-plane-2.png) no-repeat center;"></a></li>
+            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2017/240/iconmonstr-note-38.png) no-repeat center;"></a></li>
+            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-help-3.png) no-repeat center;"></a></li>
+        </ul>
+    </div>
+    <ul class="menu vertical">
+        <li class="logo" style="background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png) no-repeat center;"></li>
+        <li class="selected"><a href="#">Dashboard</a></li>
+        <li><a href="#" style="background: url() no-repeat 1px center">Locations & Buildings</a></li>
+        <li><a href="dashboard-reports.html" style="background: url() no-repeat 1px center">Reports</a></li>
+        <li><a href="#" style="background: url() no-repeat 1px center">Compliance</a></li>
+        <li><a href="#" data-open="exampleModal1">Modal Template</a></li>
+        <li><a href="./dashboard-usermanagement.html" style="background: url() no-repeat 1px center">User Management</a></li>
+        
+     </ul>
+     <div class="notes">
+        <ul class="menu vertical">
+            <li><a href="#" style="background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-megaphone-12.png&r=0&g=0&b=0) no-repeat 0px center">Updates</a></li>
+         </ul>
+         <small>Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</small>
+     </div>
+</div>
+<div class="grid-x">
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <ul class="dropdown menu" data-dropdown-menu>
+                    <li style="margin: 0px;"><p class="h6">Dashboard</p></li>
+                    <li class="hide" style="margin: 0px;">
+                        <p class="h6">Downtown Center 1
+                            <small class="sub">Last Audit: <span>January 10, 2025</span></small>
+                        </p>
+                    </li>
+                    <li class="hide"><a href="about.html" class="button pill small black" style="margin-top: 5px;">Send Audit</a></li>
+                </ul>
+            </div>
+            <div class="top-bar-right">
+                <ul class="dropdown menu float-right" data-dropdown-menu>
+                    <li>
+                        <div class="profile" style="background: url(https://cdn.prod.website-files.com/6600e1eab90de089c2d9c9cd/662c092880a6d18c31995dfd_66236531e8288ee0657ae7a7_Business%2520Professional.webp) no-repeat center;" data-toggle="example-dropdown"></div>
+                        <div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
+                            <ul class="menu vertical sub-menu">
+                                <li>link</li>
+                                <li>link</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><button class="menu-icon" type="button" data-open="offCanvas" style="margin-top: 5px;"></button></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="grid-x flex">
+                <div class="cell large-6">
+                    <div class="dashboard-callout">
+                        <span class="sub-title" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2017/240/iconmonstr-chart-22.png) no-repeat 0px center">Total Waste to {{ user.username }}</span>
+                        <p class="h1"><span id="" class="lbs">#</span><span class="label decrease percentage">3</span></p>
+                    </div>
+                </div>
+                <div class="cell large-6" style="align-self: flex-end;">
+                    <ul class="menu float-right">
+                        <li style="margin-top: 7px"><span id="">date range begin</span> - <span id="">date range end</span></li>
+                        <li style="margin-right: 0px;"><input type="date"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid-x grid-margin-x grid-padding-y small-up-1 large-up-3" style="margin-top: 1rem;" data-equalizer data-equalize-on="medium" id="test-eq">
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <div class="dashboard-callout">
+                            <span class="sub-title">Total Waste Recovered</span>
+                            <p class="lead"><span id="" class="lbs">#</span></p>
+                            <small id="" class="updated-date">1/10/2025</small>
+                            <span id="" class="label decrease percentage fixed">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <div class="dashboard-callout">
+                            <span class="sub-title">Food Recovery</span>
+                            <p class="lead"><span id="" class="lbs">#</span></p>
+                            <small id="" class="updated-date">1/10/2025</small>
+                            <span id="" class="label decrease percentage fixed">3</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <div class="dashboard-callout">
+                            <span class="sub-title">Compost</span>
+                            <p class="lead"><span id="" class="lbs">#</span></p>
+                            <small id="" class="updated-date">1/10/2025</small>
+                            <span id="" class="label decrease percentage fixed">3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Full Table -->
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title">Waste Compliance Overview</span>
+                                        <span class="button small pill secondary">Send Audit</span>
+                                    </div>
+                                    <div class="cell">
+                                        <input type="search" placeholder="Search" class="pill" style="width: 50%; float: right;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack">
+                                    <thead>
+                                        <tr>
+                                            <th width="30"><input type="checkbox" class="checkbox"></th>
+                                            <th>Waste Location</th>
+                                            <th>Waste Volume</th>
+                                            <th>Collected Location</th>
+                                            <th>Waste Collected</th>
+                                            <th>Compliance Status</th>
+                                            <th>Audit Status</th>
+                                            <th>Audit Reports</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>Downtown Center 1</td>
+                                            <td><span class="lbs">200</span><span class="sub">Compost</span></td>
+                                            <td>Compost Facility</td>
+                                            <td>January 10, 2025</td>
+                                            <td class="status not-compliant"></td>
+                                            <td><span>Last Audit</span><span class="sub">January 10, 2025</span></td>
+                                            <td><a href="dashboard-report-location.html">View Report</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>Downtown Center 2</td>
+                                            <td><span class="lbs">200</span><span class="sub">Compost</span></td>
+                                            <td>Compost Facility</td>
+                                            <td>January 10, 2025</td>
+                                            <td class="status not-compliant"></td>
+                                            <td><span>Last Audit</span><span class="sub">January 10, 2025</span></td>
+                                            <td><a href="dashboard-report-location.html">View Report</a></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>Downtown Center 3</td>
+                                            <td><span class="lbs">200</span><span class="sub">Compost</span></td>
+                                            <td>Compost Facility</td>
+                                            <td>January 10, 2025</td>
+                                            <td class="status compliant"></td>
+                                            <td><span>Last Audit</span><span class="sub">January 10, 2025</span></td>
+                                            <td><a href="dashboard-report-location.html">View Report</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Dashboard Full Table End -->
+        </div>
+    </div>
+</div>
+
+{% endblock %}
