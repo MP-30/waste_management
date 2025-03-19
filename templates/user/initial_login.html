@@ -1,26 +1,85 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Initial Login</title>
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-<body>
-    <div class="login-container">
-        <h2>Login</h2>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+
+{% extends "base.html" %}
+
+{% block title %}Reset Password{% endblock %}
+
+{% block content %}
+<div class="grid-container full-height">
+    <div class="grid-x align-center align-middle full-height">
+        <div class="medium-6 cell">
+            <div class="card">
+                <div class="card-section">
+                    <h2 class="text-center">Reset Your Password</h2>
+
+                    <form id="resetPasswordForm" method="POST">
+                        {% csrf_token %}
+
+                        <label>Temporary Password:
+                            <input type="password" id="temp_password" name="temp_password" required>
+                        </label>
+
+                        <label>New Password:
+                            <input type="password" id="new_password" name="new_password" required>
+                            <small id="passwordError" class="form-error" style="color:red; display:none;"></small>
+                        </label>
+
+                        <label>Confirm New Password:
+                            <input type="password" id="confirm_password" name="confirm_password" required>
+                            <small id="confirmError" class="form-error" style="color:red; display:none;"></small>
+                        </label>
+
+                        <button type="submit" class="button success expanded">Update Password</button>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        </div>
     </div>
-</body>
-</html></div></form>
+</div>
+
+<script>
+    document.getElementById("resetPasswordForm").addEventListener("submit", function(event) {
+        event.preventDefault();  // Prevent form submission initially
+
+        let tempPassword = document.getElementById("temp_password").value;
+        let newPassword = document.getElementById("new_password").value;
+        let confirmPassword = document.getElementById("confirm_password").value;
+
+        let passwordError = document.getElementById("passwordError");
+        let confirmError = document.getElementById("confirmError");
+
+        passwordError.style.display = "none";
+        confirmError.style.display = "none";
+
+        // Validation rules
+        if (newPassword.length < 8) {
+            passwordError.textContent = "Your password must contain at least 8 characters.";
+            passwordError.style.display = "block";
+            return;
+        }
+
+        if (/^\d+$/.test(newPassword)) {
+            passwordError.textContent = "Your password can't be entirely numeric.";
+            passwordError.style.display = "block";
+            return;
+        }
+
+        let commonPasswords = ["password", "12345678", "qwerty", "abc123", "password1"];
+        if (commonPasswords.includes(newPassword.toLowerCase())) {
+            passwordError.textContent = "Your password can't be a commonly used password.";
+            passwordError.style.display = "block";
+            return;
+        }
+
+
+
+        if (newPassword !== confirmPassword) {
+            confirmError.textContent = "Passwords do not match.";
+            confirmError.style.display = "block";
+            return;
+        }
+
+        // If all validations pass, submit the form
+        this.submit();
+    });
+</script>
+{% endblock %}
