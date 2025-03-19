@@ -1,25 +1,37 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h2>Login</h2>
-    {% if messages %}
-        {% for message in messages %}
-            <p style="color: red;">{{ message }}</p>
-        {% endfor %}
-    {% endif %}
-    <form method="POST">
-        {% csrf_token %}
-        <label>Username:</label>
-        <input type="text" name="username" required><br>
-        
-        <label>Password:</label>
-        <input type="password" name="password" required><br>
+{% extends "base.html" %}
 
-        <button type="submit">Login</button>
-    </form>
-    
-</body>
-</html>
+{% block title %}Login - My Django App{% endblock %}
+
+{% block content %}
+<div class="grid-container full-height">
+    <div class="grid-x align-center align-middle full-height">
+        <div class="medium-6 cell">
+            <div class="card">
+                <div class="card-section">
+                    <h2 class="text-center">Login</h2>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="callout alert">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <form method="POST">
+                        {% csrf_token %}
+
+                        <label>Username:
+                            <input type="text" name="username" required>
+                        </label>
+
+                        <label>Password:
+                            <input type="password" name="password" required>
+                        </label>
+
+                        <button type="submit" class="button success expanded">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
