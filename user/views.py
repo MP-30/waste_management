@@ -72,6 +72,7 @@ def initial_login(request):
         form = InitialLoginForm()
 
     return render(request, "user/initial_login.html", {"form": form})
+    # return render(request, "user/login.html", {'form':form})
 
 '''
             form.save()
