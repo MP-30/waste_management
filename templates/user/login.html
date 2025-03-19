@@ -18,16 +18,21 @@
 
                     <form method="POST">
                         {% csrf_token %}
-
+                        <div class="cell">
                         <label>Username:
                             <input type="text" name="username" required>
                         </label>
-
+                        </div>
+                        <div class="cell">
                         <label>Password:
                             <input type="password" name="password" required>
                         </label>
-
-                        <button type="submit" class="button success expanded">Login</button>
+                    </div>
+                        <div class="cell">
+                            <div class="button-group expanded">
+                                <button type="submit" class="button pill">Submit</button>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

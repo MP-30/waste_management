@@ -3,32 +3,7 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="callout side-bar show-for-large">
-    <div class="side-nav">
-        <ul class="menu vertical">
-            <li class="logo-mark"><a href="#"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-paper-plane-2.png) no-repeat center;"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2017/240/iconmonstr-note-38.png) no-repeat center;"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-help-3.png) no-repeat center;"></a></li>
-        </ul>
-    </div>
-    <ul class="menu vertical">
-        <li class="logo" style="background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png) no-repeat center;"></li>
-        <li class="selected"><a href="#">Dashboard</a></li>
-        <li><a href="#" style="background: url() no-repeat 1px center">Locations & Buildings</a></li>
-        <li><a href="dashboard-reports.html" style="background: url() no-repeat 1px center">Reports</a></li>
-        <li><a href="#" style="background: url() no-repeat 1px center">Compliance</a></li>
-        <li><a href="#" data-open="exampleModal1">Modal Template</a></li>
-        <li><a href="./dashboard-usermanagement.html" style="background: url() no-repeat 1px center">User Management</a></li>
-        
-     </ul>
-     <div class="notes">
-        <ul class="menu vertical">
-            <li><a href="#" style="background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-megaphone-12.png&r=0&g=0&b=0) no-repeat 0px center">Updates</a></li>
-         </ul>
-         <small>Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</small>
-     </div>
-</div>
+{% include 'sidebar.html' %}
 <div class="grid-x">
     <div class="cell large-10 large-offset-2">
         <div class="top-bar">
