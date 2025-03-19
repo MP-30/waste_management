@@ -14,6 +14,7 @@ from django.conf import settings
 import uuid
 from django.contrib.auth import update_session_auth_hash
 from django.utils.encoding import force_str
+from django.contrib.auth.hashers import check_password
 
 
 def activate(request, uidb64, token):
@@ -28,21 +29,51 @@ def activate(request, uidb64, token):
     if user and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
+
+        request.session["activated_user_id"] = user.id
+
         messages.success(request, "Account activated successfully! Please log in.")
         return redirect("initial_login")  # Redirect to initial login form
     else:
         messages.error(request, "Invalid or expired activation link.")
         return redirect("login")
-@login_required
+    
 def initial_login(request):
-    user = request.user
+    user_id = request.session.get("activated_user_id")  
 
-    # Ensure user profile exists
-    user_profile, created = UserProfile.objects.get_or_create(user=user)  
+    if not user_id:  # No activated user in session
+        messages.error(request, "Session expired or invalid request. Please log in.")
+        return redirect("login")
+
+    # Get the user from the session
+    user = get_object_or_404(User, pk=user_id)
 
     if request.method == "POST":
-        form = InitialLoginForm(request.POST, instance=user_profile)
+        form = InitialLoginForm(request.POST)
         if form.is_valid():
+            temporary_password = form.cleaned_data["temporary_password"]
+            new_password = form.cleaned_data.get("new_password1")
+
+            print(f"Received temp password: {temporary_password}")
+
+            if check_password(temporary_password, user.password):
+                user.set_password(new_password)
+                user.save()
+
+                # Clear session to avoid reuse
+                del request.session["activated_user_id"]
+
+                messages.success(request, "Your password has been updated successfully! Please log in.")
+                return redirect("login")  
+            else:
+                print(f"Password mismatch for user: {user.username}")
+                messages.error(request, "Invalid temporary password.")
+    else:
+        form = InitialLoginForm()
+
+    return render(request, "user/initial_login.html", {"form": form})
+
+'''
             form.save()
             user.set_password(form.cleaned_data["new_password1"])  # Set new password
             user.save()
@@ -53,7 +84,7 @@ def initial_login(request):
         form = InitialLoginForm(instance=user_profile)
 
     return render(request, "user/initial_login.html", {"form": form})
-
+'''
 def user_login(request):
     if request.method == "POST":
         username = request.POST.get("username")

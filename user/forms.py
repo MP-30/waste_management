@@ -1,6 +1,8 @@
 from django import forms
 from .models import UserProfile
 from django.contrib.auth.models import User
+from .models import UserProfile
+from django.contrib.auth.hashers import check_password
 
 
 class UserProfileForm(forms.ModelForm):
@@ -24,41 +26,50 @@ class UserProfileForm(forms.ModelForm):
             self.fields["phone_number"].disabled = True  
 
 
-class InitialLoginForm(UserProfileForm):  
-    first_name = forms.CharField(label="First Name", max_length=30, required=False)
-    last_name = forms.CharField(label="Last Name", max_length=30, required=False)
-    new_password1 = forms.CharField(label="New Password", widget=forms.PasswordInput, required=False)
-    new_password2 = forms.CharField(label="Confirm New Password", widget=forms.PasswordInput, required=False)
 
-    class Meta(UserProfileForm.Meta):
-        fields = ["first_name", "last_name"] + UserProfileForm.Meta.fields  
+class InitialLoginForm(forms.Form):  
+    temporary_password = forms.CharField(
+        label="Temporary Password",
+        widget=forms.PasswordInput,
+        max_length=128  # Increased length to match Django's password storage
+    )
+    new_password1 = forms.CharField(
+        label="New Password",
+        widget=forms.PasswordInput,
+        required=True  # Ensures new password is mandatory
+    )
+    new_password2 = forms.CharField(
+        label="Confirm New Password",
+        widget=forms.PasswordInput,
+        required=True
+    )
 
-    def clean_new_password2(self):
-        password1 = self.cleaned_data.get("new_password1")
-        password2 = self.cleaned_data.get("new_password2")
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop("user", None)  # Pass the user instance to the form
+        super().__init__(*args, **kwargs)
+
+    def clean_temporary_password(self):
+        """Validate the temporary password against the stored password"""
+        temp_pw = self.cleaned_data.get("temporary_password")
+
+        if self.user and not check_password(temp_pw, self.user.password):
+            raise forms.ValidationError("Temporary password is incorrect.")
+        
+        return temp_pw
+
+    def clean(self):
+        """Ensure new passwords match"""
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get("new_password1")
+        password2 = cleaned_data.get("new_password2")
 
         if password1 and password1 != password2:
-            raise forms.ValidationError("Passwords must match")
-        return password2
-
-    def save(self, user, commit=True):
-        """ Save user profile and optionally update password """
-        user.first_name = self.cleaned_data.get("first_name") or user.first_name
-        user.last_name = self.cleaned_data.get("last_name") or user.last_name
-
-        if self.cleaned_data.get("new_password1"):
-            user.set_password(self.cleaned_data["new_password1"]) 
-
-        if commit:
-            user.save()
-
+            raise forms.ValidationError("New passwords must match.")
         
-        profile, created = UserProfile.objects.get_or_create(user=user)
-        profile.phone_number = self.cleaned_data.get("phone_number") or profile.phone_number
-        profile.city = self.cleaned_data.get("city") or profile.city
-        profile.pincode = self.cleaned_data.get("pincode") or profile.pincode
+        return cleaned_data
 
-        if commit:
-            profile.save()
-
-        return user
+    def save(self):
+        """Set the new password for the user"""
+        self.user.set_password(self.cleaned_data["new_password1"])
+        self.user.save()
+        return self.user

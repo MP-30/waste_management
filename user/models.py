@@ -24,7 +24,7 @@ class UserProfile(models.Model):
 @receiver(post_save, sender=User)
 def send_initial_email(sender, instance, created, **kwargs):
     print(f"Signal Triggered for :{instance.username}, Created: {created}")
-    if created:
+    if created and not instance._state.adding:
        
         print("New user created", instance.username)
         print(f"New user detected: {instance.username}, Email: {instance.email}")
