@@ -1,0 +1,163 @@
+{% extends "core/base.html" %}
+
+{% block page_title %}{{ title }}{% endblock %}
+
+{% block core_content %}
+<div class="dashboard-content">
+    <div class="grid-container">
+        <div class="grid-x grid-padding-x align-center">
+            <div class="cell medium-8 large-7">
+                <div class="callout">
+                    <form method="post" data-abide novalidate>
+                        {% csrf_token %}
+                        <div class="grid-x grid-margin-y">
+                            <div class="cell text-center">
+                                <h4>{{ title }}</h4>
+                            </div>
+                        </div>
+
+                        <div class="grid-x grid-margin-y">
+                            <div class="cell">
+                                <label>
+                                    Waste Generator Name
+                                    <span class="required">*</span>
+                                    {{ form.name }}
+                                </label>
+                                {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <label>Waste Generator Address</label>
+                                <div class="grid-x grid-margin-x">
+                                    <div class="cell medium-6">
+                                        {{ form.address_line1 }}
+                                        {% if form.address_line1.errors %}
+                                            {% for error in form.address_line1.errors %}
+                                                <span class="form-error is-visible">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell medium-6">
+                                        {{ form.address_line2 }}
+                                    </div>
+                                    <div class="cell medium-4">
+                                        {{ form.city }}
+                                        {% if form.city.errors %}
+                                            {% for error in form.city.errors %}
+                                                <span class="form-error is-visible">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell medium-4">
+                                        {{ form.state }}
+                                        {% if form.state.errors %}
+                                            {% for error in form.state.errors %}
+                                                <span class="form-error is-visible">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    <div class="cell medium-4">
+                                        {{ form.zipcode }}
+                                        {% if form.zipcode.errors %}
+                                            {% for error in form.zipcode.errors %}
+                                                <span class="form-error is-visible">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="cell">
+                                <label>
+                                    Waste Generator Group
+                                    <span class="required">*</span>
+                                    {{ form.group }}
+                                </label>
+                                {% if form.group.errors %}
+                                    {% for error in form.group.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <label>
+                                    Waste Source Specification
+                                    <span class="required">*</span>
+                                    {{ form.waste_specification }}
+                                </label>
+                                {% if form.waste_specification.errors %}
+                                    {% for error in form.waste_specification.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <label>
+                                    Contact Name
+                                    <span class="required">*</span>
+                                    {{ form.contact_person }}
+                                </label>
+                                {% if form.contact_person.errors %}
+                                    {% for error in form.contact_person.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <label>
+                                    Contact Phone No
+                                    <span class="required">*</span>
+                                    {{ form.contact_phone }}
+                                </label>
+                                {% if form.contact_phone.errors %}
+                                    {% for error in form.contact_phone.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <label>
+                                    Contact Email
+                                    <span class="required">*</span>
+                                    {{ form.contact_email }}
+                                </label>
+                                {% if form.contact_email.errors %}
+                                    {% for error in form.contact_email.errors %}
+                                        <span class="form-error is-visible">{{ error }}</span>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+
+                            <div class="cell">
+                                <div class="switch">
+                                    <label>
+                                        Waste Generator Status
+                                        {{ form.is_active }}
+                                        <span class="switch-label">Active</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid-x grid-margin-y">
+                            <div class="cell">
+                                <div class="button-group expanded">
+                                    <button type="submit" class="button primary pill">Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

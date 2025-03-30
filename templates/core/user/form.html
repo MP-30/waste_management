@@ -1,0 +1,157 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>{{ title }}</h4>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="grid-container">
+                <div class="grid-x grid-padding-x">
+                    <div class="cell medium-8 medium-offset-2">
+                        <div class="callout">
+                            <form method="post" enctype="multipart/form-data" data-abide novalidate>
+                                {% csrf_token %}
+                                
+                                <div class="grid-x grid-margin-x">
+                                    <!-- First Name -->
+                                    <div class="cell medium-6">
+                                        <label>
+                                            First Name
+                                            <span class="required">*</span>
+                                            <input type="text" name="first_name" value="{{ form.first_name.value|default:'' }}" required>
+                                        </label>
+                                        {% if form.first_name.errors %}
+                                        <span class="form-error is-visible">{{ form.first_name.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Last Name -->
+                                    <div class="cell medium-6">
+                                        <label>
+                                            Last Name
+                                            <span class="required">*</span>
+                                            <input type="text" name="last_name" value="{{ form.last_name.value|default:'' }}" required>
+                                        </label>
+                                        {% if form.last_name.errors %}
+                                        <span class="form-error is-visible">{{ form.last_name.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Email -->
+                                    <div class="cell medium-6">
+                                        <label>
+                                            Email
+                                            <span class="required">*</span>
+                                            <input type="email" name="email" value="{{ form.email.value|default:'' }}" required>
+                                        </label>
+                                        {% if form.email.errors %}
+                                        <span class="form-error is-visible">{{ form.email.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Phone Number -->
+                                    <div class="cell medium-6">
+                                        <label>
+                                            Phone Number
+                                            <span class="required">*</span>
+                                            <input type="tel" name="phone_number" value="{{ form.phone_number.value|default:'' }}" required>
+                                        </label>
+                                        {% if form.phone_number.errors %}
+                                        <span class="form-error is-visible">{{ form.phone_number.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Role -->
+                                    <div class="cell medium-12">
+                                        <label>
+                                            Role
+                                            <span class="required">*</span>
+                                            <select name="role" required>
+                                                <option value="">Select Role</option>
+                                                {% for role in form.role.field.queryset %}
+                                                <option value="{{ role.id }}" {% if form.role.value == role.id %}selected{% endif %}>
+                                                    {{ role.get_name_display }}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </label>
+                                        {% if form.role.errors %}
+                                        <span class="form-error is-visible">{{ form.role.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Profile Picture -->
+                                    <div class="cell medium-12">
+                                        <label>
+                                            Profile Picture
+                                            <input type="file" name="profile_pic" accept="image/*">
+                                        </label>
+                                        {% if form.profile_pic.errors %}
+                                        <span class="form-error is-visible">{{ form.profile_pic.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="cell medium-12">
+                                        <div class="switch">
+                                            <input class="switch-input" type="checkbox" id="is_active" name="is_active" {% if form.is_active.value %}checked{% endif %}>
+                                            <label class="switch-paddle" for="is_active">
+                                                <span class="show-for-sr">Active Status</span>
+                                            </label>
+                                        </div>
+                                        <label for="is_active" class="switch-label">Active</label>
+                                    </div>
+                                </div>
+
+                                <div class="button-group">
+                                    <button type="submit" class="button primary">Save User</button>
+                                    <a href="{% url 'user_dashboard' %}" class="button secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.required {
+    color: #cc4b37;
+    margin-left: 0.2rem;
+}
+
+.switch-label {
+    display: inline-block;
+    margin-left: 1rem;
+    vertical-align: top;
+    margin-top: 0.5rem;
+}
+
+.button-group {
+    margin-top: 2rem;
+}
+
+.button-group .button {
+    margin-right: 1rem;
+}
+
+.form-error {
+    margin-top: -1rem;
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %} 

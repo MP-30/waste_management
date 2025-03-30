@@ -15,6 +15,8 @@ import uuid
 from django.contrib.auth import update_session_auth_hash
 from django.utils.encoding import force_str
 from django.contrib.auth.hashers import check_password
+from core.models import Organization
+from core.models import UserRole
 
 
 def activate(request, uidb64, token):
@@ -60,6 +62,16 @@ def initial_login(request):
                 user.set_password(new_password)
                 user.save()
 
+                # Create default organization for the user
+                organization = Organization.objects.create(
+                    name=f"{user.username}'s Organization",
+                    address="",
+                    contact_person=user.username,
+                    contact_email=user.email,
+                    contact_phone="",
+                    owner=user
+                )
+
                 # Clear session to avoid reuse
                 del request.session["activated_user_id"]
 
@@ -93,7 +105,30 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("dashboard")
+            
+            # First check if user is an organization owner (admin)
+            is_admin = Organization.objects.filter(owner=user).exists()
+            if is_admin:
+                return redirect('admin_dashboard')
+            
+            # If not admin, check for role-based access
+            try:
+                from core.models import UserProfile as CoreUserProfile
+                core_profile = CoreUserProfile.objects.get(user=user)
+                if core_profile.role:
+                    return redirect('user_dashboard')
+                else:
+                    return redirect('admin_dashboard')
+            except CoreUserProfile.DoesNotExist:
+                # Create core profile if it doesn't exist
+                organization = Organization.objects.filter(owner=user).first()
+                if organization:
+                    CoreUserProfile.objects.create(
+                        user=user,
+                        organization=organization,
+                        is_active=True
+                    )
+                return redirect('admin_dashboard')
         else:
             messages.error(request, "Invalid username or password.")
     return render(request, "user/login.html")
@@ -105,4 +140,26 @@ def user_logout(request):
 
 @login_required
 def dashboard(request):
-    return render(request, "user/dashboard.html")
+    # First check if user is an organization owner (admin)
+    is_admin = Organization.objects.filter(owner=request.user).exists()
+    if is_admin:
+        return redirect('admin_dashboard')
+    
+    # If not admin, check for role-based access
+    try:
+        from core.models import UserProfile as CoreUserProfile
+        core_profile = CoreUserProfile.objects.get(user=request.user)
+        if core_profile.role:
+            return redirect('user_dashboard')
+        else:
+            return redirect('admin_dashboard')
+    except CoreUserProfile.DoesNotExist:
+        # Create core profile if it doesn't exist
+        organization = Organization.objects.filter(owner=request.user).first()
+        if organization:
+            CoreUserProfile.objects.create(
+                user=request.user,
+                organization=organization,
+                is_active=True
+            )
+        return redirect('admin_dashboard')

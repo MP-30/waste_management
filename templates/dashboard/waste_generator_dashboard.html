@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+
+{% block page_title %}Waste Generators{% endblock %}
+
+{% block core_content %}
+<!-- Dashboard Full Table -->
+<div class="table-container top-margin">
+    <div class="grid-x">
+        <div class="cell large-12">
+            <div class="callout">
+                <div class="dashboard-callout">
+                    <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                        <div class="cell">
+                            <span class="sub-title">Waste Generators</span>
+                            <a href="{% url 'waste_generator_add' %}" class="button small pill">Add New Generator</a>
+                        </div>
+                        <div class="cell">
+                            <input type="search" placeholder="Search" class="pill" style="width: 50%; float: right;">
+                        </div>
+                    </div>
+                </div>
+                <div class="table">
+                    <table class="stack hover">
+                        <thead>
+                            <tr>
+                                <th width="30"><input type="checkbox" class="checkbox"></th>
+                                <th>Name</th>
+                                <th>Location</th>
+                                <th>Contact Person</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for generator in generators %}
+                            <tr>
+                                <td><input type="checkbox" class="checkbox"></td>
+                                <td>{{ generator.name }}</td>
+                                <td>{{ generator.location }}</td>
+                                <td>{{ generator.contact_person }}</td>
+                                <td>{{ generator.contact_email }}</td>
+                                <td>{{ generator.contact_phone }}</td>
+                                <td>
+                                    <a href="{% url 'waste_generator_edit' generator.pk %}" class="button small">Edit</a>
+                                    <a href="{% url 'waste_generator_delete' generator.pk %}" class="button alert small">Delete</a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="7" class="text-center">No waste generators found. <a href="{% url 'waste_generator_add' %}">Add one now</a>.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashboard Full Table End -->
+{% endblock %} 

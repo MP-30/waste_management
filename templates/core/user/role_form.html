@@ -1,0 +1,107 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>{{ title }}</h4>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="grid-container">
+                <div class="grid-x grid-padding-x">
+                    <div class="cell medium-8 medium-offset-2">
+                        <div class="callout">
+                            <form method="post" data-abide novalidate>
+                                {% csrf_token %}
+                                
+                                <div class="grid-x grid-margin-x">
+                                    <!-- Role Name -->
+                                    <div class="cell medium-12">
+                                        <label>
+                                            Role Name
+                                            <span class="required">*</span>
+                                            <input type="text" name="name" value="{{ form.name.value|default:'' }}" required>
+                                        </label>
+                                        {% if form.name.errors %}
+                                        <span class="form-error is-visible">{{ form.name.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="cell medium-12">
+                                        <label>
+                                            Description
+                                            <textarea name="description" rows="4">{{ form.description.value|default:'' }}</textarea>
+                                        </label>
+                                        {% if form.description.errors %}
+                                        <span class="form-error is-visible">{{ form.description.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+
+                                    <!-- Permissions -->
+                                    <div class="cell medium-12">
+                                        <label>Permissions</label>
+                                        <div class="permissions-container">
+                                            {{ form.permissions }}
+                                        </div>
+                                        {% if form.permissions.errors %}
+                                        <span class="form-error is-visible">{{ form.permissions.errors.0 }}</span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="button-group">
+                                    <button type="submit" class="button primary">Save Changes</button>
+                                    <a href="{% url 'role_list' %}" class="button secondary">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.permissions-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    border: 1px solid #cacaca;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+}
+
+.permissions-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.permissions-container input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+textarea {
+    min-height: 100px;
+}
+
+.button-group {
+    margin-top: 2rem;
+}
+
+.button-group .button {
+    margin-right: 1rem;
+}
+</style>
+{% endblock %} 

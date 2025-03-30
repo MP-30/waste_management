@@ -1,0 +1,50 @@
+{% extends "core/base.html" %}
+
+{% block core_content %}
+<div class="grid-x grid-margin-x">
+    <div class="cell">
+        <div class="grid-x align-justify">
+            <div class="cell small-12 medium-6">
+                <h2>Waste Types</h2>
+            </div>
+            <div class="cell small-12 medium-6 text-right">
+                <a href="{% url 'waste_type_add' %}" class="button">Add New Type</a>
+            </div>
+        </div>
+
+        <table class="hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Hazardous</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for type in types %}
+                <tr>
+                    <td>{{ type.name }}</td>
+                    <td>{{ type.description }}</td>
+                    <td>
+                        {% if type.hazardous %}
+                            <span class="label alert">Yes</span>
+                        {% else %}
+                            <span class="label secondary">No</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="{% url 'waste_type_edit' type.pk %}" class="button small">Edit</a>
+                        <a href="{% url 'waste_type_delete' type.pk %}" class="button alert small">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center">No waste types found. <a href="{% url 'waste_type_add' %}">Add one now</a>.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 

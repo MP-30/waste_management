@@ -4,36 +4,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}My Django App{% endblock %}</title>
+    <title>{% block title %}Waste Management System{% endblock %}</title>
 
     <!-- Foundation CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/css/foundation.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/foundation-sites@6.8.1/dist/css/foundation.min.css" crossorigin="anonymous">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/app.css' %}">
 
+    <style>
+        /* Foundation Form Overrides */
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="password"],
+        select {
+            height: 2.4375rem;
+            padding: 0.5rem;
+            border: 1px solid #cacaca;
+            margin: 0;
+            font-size: 1rem;
+            font-family: inherit;
+            line-height: normal;
+            color: #0a0a0a;
+            background-color: #fefefe;
+            border-radius: 3px;
+            box-shadow: none;
+        }
+
+        .cell {
+            margin-bottom: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            color: #333;
+        }
+
+        .button.pill {
+            border-radius: 2rem;
+            margin: 1rem 0;
+        }
+
+        .callout {
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 1.5rem;
+        }
+
+        .grid-container {
+            padding: 1rem;
+        }
+
+        .checkbox {
+            margin-right: 0.5rem;
+        }
+
+        .grid-margin-y {
+            margin-top: 0;
+        }
+
+        .grid-margin-y > .cell {
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .required {
+            color: #cc4b37;
+            margin-left: 0.25rem;
+        }
+
+        .form-error {
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+        }
+
+        h4 {
+            margin-bottom: 1rem;
+        }
+
+        .switch-label {
+            margin-left: 0.5rem;
+        }
+
+        /* Reduce space between address fields */
+        .grid-margin-x > .cell {
+            padding-right: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        /* Style for select dropdowns */
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' version='1.1' width='32' height='24' viewBox='0 0 32 24'><polygon points='0,0 32,0 16,24' style='fill: rgb(138,138,138)'></polygon></svg>");
+            background-size: 9px 6px;
+            background-position: right center;
+            background-repeat: no-repeat;
+            padding-right: 1.5rem;
+        }
+    </style>
 </head>
 <body id="dashboard">
 
     {% block content %}{% endblock %}
 
     <!-- jQuery (Load First) -->
-    <script src="{% static 'js/vendor/jquery.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <!-- Foundation JS (Load After jQuery) -->
-    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.7.5/dist/js/foundation.min.js"></script>
+    <!-- Foundation JS -->
+    <script src="https://cdn.jsdelivr.net/npm/foundation-sites@6.8.1/dist/js/foundation.min.js" crossorigin="anonymous"></script>
 
     <!-- Other Required Scripts -->
     <script src="{% static 'js/vendor/what-input.js' %}"></script>
-    <script src="{% static 'js/vendor/foundation.js' %}"></script>
     <script src="{% static 'js/app.js' %}"></script>
     <script src="{% static 'js/scrollfade-0.1.js' %}"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        $(document).ready(function() {
             $(document).foundation();
+            
+            // Initialize form validation
+            $('.form').on('invalid.zf.abide', function (ev,elem) {
+                ev.preventDefault();
+            }).on('valid.zf.abide', function (ev,elem) {
+                console.log('Form submitted successfully');
+            });
         });
     </script>
 

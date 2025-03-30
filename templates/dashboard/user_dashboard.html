@@ -1,0 +1,119 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>User Dashboardaaa</h4>
+            </div>
+            <div class="top-bar-right">
+                <input type="search" placeholder="Search" class="search-input">
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <!-- Users Table -->
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title">Users</span>
+                                        <a href="{% url 'user_add' %}" class="button small pill">Add User</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="30"><input type="checkbox" class="checkbox"></th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Profile Pic</th>
+                                            <th>Created Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for profile in user_profiles %}
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>{{ profile.user.first_name }}</td>
+                                            <td>{{ profile.user.last_name }}</td>
+                                            <td>{{ profile.user.email }}</td>
+                                            <td>{{ profile.phone_number }}</td>
+                                            <td>{{ profile.role.name|default:"-" }}</td>
+                                            <td>
+                                                {% if profile.is_active %}
+                                                <span class="label success">Active</span>
+                                                {% else %}
+                                                <span class="label alert">Inactive</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if profile.profile_pic %}
+                                                <img src="{{ profile.profile_pic.url }}" alt="Profile" style="width: 30px; height: 30px; border-radius: 50%;">
+                                                {% else %}
+                                                -
+                                                {% endif %}
+                                            </td>
+                                            <td>{{ profile.created_at|date:"d/m/Y" }}</td>
+                                            <td>
+                                                <a href="{% url 'user_edit' profile.user.pk %}" class="edit-link">Edit</a>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="10" class="text-center">No users found. <a href="{% url 'user_add' %}">Add one now</a>.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.edit-link {
+    color: #1779ba;
+    text-decoration: none;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+}
+
+.label {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.search-input {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    width: 300px;
+}
+</style>
+{% endblock %} 

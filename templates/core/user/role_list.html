@@ -1,0 +1,117 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Manage Roles{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>Manage Roles</h4>
+            </div>
+            <div class="top-bar-right">
+                <input type="search" placeholder="Search" class="search-input">
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title">Roles</span>
+                                        <a href="{% url 'role_add' %}" class="button small pill">Add Role</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="30"><input type="checkbox" class="checkbox"></th>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Permissions</th>
+                                            <th>Created Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for role in roles %}
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>{{ role.name }}</td>
+                                            <td>{{ role.description|truncatewords:10 }}</td>
+                                            <td>
+                                                {% for permission in role.permissions.all %}
+                                                <span class="label">{{ permission.name }}</span>
+                                                {% empty %}
+                                                <span class="label secondary">No permissions</span>
+                                                {% endfor %}
+                                            </td>
+                                            <td>{{ role.created_at|date:"d/m/Y" }}</td>
+                                            <td>
+                                                <a href="{% url 'role_edit' role.pk %}" class="edit-link">Edit</a>
+                                                <a href="{% url 'role_delete' role.pk %}" class="delete-link">Delete</a>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="6" class="text-center">No roles found. <a href="{% url 'role_add' %}">Add one now</a>.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.edit-link, .delete-link {
+    color: #1779ba;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.edit-link:hover, .delete-link:hover {
+    text-decoration: underline;
+}
+
+.delete-link {
+    color: #cc4b37;
+}
+
+.label {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    background-color: #1779ba;
+    color: white;
+}
+
+.label.secondary {
+    background-color: #767676;
+}
+
+.search-input {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    width: 300px;
+}
+</style>
+{% endblock %} 

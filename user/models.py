@@ -17,8 +17,31 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=100, blank=True, null=True)
     pincode = models.CharField(max_length=10, blank=True, null=True)
 
+    class Meta:
+        db_table = 'tbl_user_profile'
+
     def __str__(self):
         return self.user.username
+
+
+class UserRole(models.Model):
+    ROLE_CHOICES = [
+        ('ADMIN', 'Administrator'),
+        ('AUDITOR', 'Auditor'),
+        ('DATA_MANAGER', 'Data Manager'),
+    ]
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organization = models.ForeignKey('core.Organization', on_delete=models.CASCADE)
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'tbl_user_role'
+
+    def __str__(self):
+        return f"{self.user.username} - {self.role}"
 
 
 @receiver(post_save, sender=User)
@@ -51,8 +74,6 @@ def send_initial_email(sender, instance, created, **kwargs):
             'activation_url': activation_url,  # Send the activation URL
         })
 
-        # send_mail(subject, "", settings.EMAIL_HOST_USER, [instance.email], fail_silently=False, html_message=message)
-        # send_mail(subject, "please activate your account", settings.EMAIL_HOST_USER, [instance.email], fail_silently=False, html_message=message)
         send_mail(
                 subject,
                 "",  # Empty string for text content (since we are using `html_message`)
@@ -61,13 +82,6 @@ def send_initial_email(sender, instance, created, **kwargs):
                 fail_silently=False,
                 html_message=message
             )
-        # send_mail(
-        #         "Test Email",
-        #         "This is a test email from Django.",
-        #         settings.EMAIL_HOST_USER,
-        #         ["adityabhadauriya93@gmail.com"],  # Replace with your actual email
-        #         fail_silently=False,
-        #     )
 
         print("Email sent to ", instance.email)
         print("Activation link send", activation_url)

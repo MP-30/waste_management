@@ -1,26 +1,153 @@
-<div class="callout side-bar show-for-large">
-    <div class="side-nav">
-        <ul class="menu vertical">
-            <li class="logo-mark"><a href="#"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2013/240/iconmonstr-paper-plane-2.png) no-repeat center;"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2017/240/iconmonstr-note-38.png) no-repeat center;"></a></li>
-            <li><a href="#" style="background: url(https://cdns.iconmonstr.com/wp-content/releases/preview/2012/240/iconmonstr-help-3.png) no-repeat center;"></a></li>
-        </ul>
-    </div>
-    <ul class="menu vertical">
-        <li class="logo" style="background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png) no-repeat center;"></li>
-        <li class="selected"><a href="#">Dashboard</a></li>
-        <li><a href="#" style="background: url() no-repeat 1px center">Locations & Buildings</a></li>
-        <li><a href="dashboard-reports.html" style="background: url() no-repeat 1px center">Reports</a></li>
-        <li><a href="#" style="background: url() no-repeat 1px center">Compliance</a></li>
-        <li><a href="#" data-open="exampleModal1">Modal Template</a></li>
-        <li><a href="./dashboard-usermanagement.html" style="background: url() no-repeat 1px center">User Management</a></li>
+{% load static %}
+<!-- Sidebar -->
+<div class="cell large-2">
+    <div class="sidebar">
+        <!-- Logo -->
+        <div class="logo text-center">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png" alt="Google" style="max-width: 120px; margin: 1rem 0;">
+        </div>
         
-     </ul>
-     <div class="notes">
-        <ul class="menu vertical">
-            <li><a href="#" style="background: url(https://iconmonstr.com/wp-content/g/gd/makefg.php?i=../releases/preview/2012/png/iconmonstr-megaphone-12.png&r=0&g=0&b=0) no-repeat 0px center">Updates</a></li>
-         </ul>
-         <small>Donec ullamcorper nulla non metus auctor fringilla. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</small>
-     </div>
+        <!-- Navigation Menu -->
+        <ul class="vertical menu">
+            <li><a href="{% url 'admin_dashboard' %}" {% if request.resolver_match.url_name == 'admin_dashboard' %}class="active"{% endif %}>Dashboard</a></li>
+            <li><a href="#">Locations & Buildings</a></li>
+            <li><a href="#">Reports</a></li>
+            <li><a href="#">Compliance</a></li>
+            <li><a href="#">Modal Template</a></li>
+            
+            <!-- User Management Section -->
+            <li class="menu-section-label">User Management</li>
+            <li><a href="{% url 'user_dashboard' %}" {% if request.resolver_match.url_name == 'user_dashboard' %}class="active"{% endif %}>
+                <i class="fas fa-users"></i> Users List
+            </a></li>
+            <li><a href="{% url 'user_add' %}" {% if request.resolver_match.url_name == 'user_add' %}class="active"{% endif %}>
+                <i class="fas fa-user-plus"></i> Add User
+            </a></li>
+            <li><a href="{% url 'role_list' %}" {% if request.resolver_match.url_name == 'role_list' %}class="active"{% endif %}>
+                <i class="fas fa-user-tag"></i> Manage Roles
+            </a></li>
+            <li><a href="{% url 'manage_permissions' %}" {% if request.resolver_match.url_name == 'manage_permissions' %}class="active"{% endif %}>
+                <i class="fas fa-key"></i> Manage Permissions
+            </a></li>
+            
+            <!-- Other Management Links -->
+            <li class="menu-section-label">Waste Management</li>
+            <li><a href="{% url 'waste_generator_dashboard' %}" {% if 'waste-generators' in request.path %}class="active"{% endif %}>
+                <i class="fas fa-recycle"></i> Waste Generator
+            </a></li>
+            <li><a href="{% url 'waste_collector_list' %}" {% if 'waste-collectors' in request.path %}class="active"{% endif %}>
+                <i class="fas fa-truck"></i> Waste Collector
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-file-contract"></i> Agreements
+            </a></li>
+            <li><a href="#">
+                <i class="fas fa-box"></i> Commodity
+            </a></li>
+        </ul>
+
+        <!-- Updates Section -->
+        <div class="updates-section">
+            <h6><i class="fas fa-bell"></i> Updates</h6>
+            <div class="update-item">
+                <span class="update-badge">New</span>
+                <p>System maintenance scheduled for next week.</p>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+.sidebar {
+    background: white;
+    height: 100vh;
+    position: fixed;
+    width: 16.666667%;
+    padding: 1rem;
+    border-right: 1px solid #e6e6e6;
+    overflow-y: auto;
+}
+
+.sidebar .menu {
+    margin: 1rem 0;
+}
+
+.sidebar .menu a {
+    color: #333;
+    padding: 0.7rem 1rem;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: block;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.sidebar .menu a:hover {
+    background-color: #f0f0f0;
+}
+
+.sidebar .menu a.active {
+    background-color: #1779ba;
+    color: white;
+}
+
+.menu-section-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #666;
+    padding: 1rem 1rem 0.5rem;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.sidebar .menu i {
+    width: 20px;
+    margin-right: 8px;
+}
+
+.updates-section {
+    position: fixed;
+    bottom: 0;
+    width: calc(16.666667% - 2rem);
+    padding: 1rem;
+    background: white;
+    border-top: 1px solid #e6e6e6;
+}
+
+.updates-section h6 {
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.update-item {
+    background: #f8f9fa;
+    padding: 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+}
+
+.update-badge {
+    background: #1779ba;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.7rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.update-item p {
+    font-size: 0.8rem;
+    color: #666;
+    margin: 0;
+}
+
+/* Ensure main content is pushed right */
+.large-offset-2 {
+    margin-left: 16.666667%;
+}
+</style>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">

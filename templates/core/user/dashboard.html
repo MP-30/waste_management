@@ -1,0 +1,146 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}User Management{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>User Management</h4>
+            </div>
+            <div class="top-bar-right">
+                <a href="{% url 'user_add' %}" class="button primary">Add User</a>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="grid-container">
+                <!-- Stats Cards -->
+                <div class="grid-x grid-margin-x grid-margin-y">
+                    <div class="cell small-12 medium-4">
+                        <div class="callout">
+                            <h5>Total Users</h5>
+                            <h3>{{ total_users }}</h3>
+                        </div>
+                    </div>
+                    <div class="cell small-12 medium-4">
+                        <div class="callout">
+                            <h5>Active Users</h5>
+                            <h3>{{ active_users }}</h3>
+                        </div>
+                    </div>
+                    <div class="cell small-12 medium-4">
+                        <div class="callout">
+                            <h5>Total Roles</h5>
+                            <h3>{{ total_roles }}</h3>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Messages -->
+                {% if messages %}
+                <div class="grid-x grid-margin-x">
+                    <div class="cell">
+                        {% for message in messages %}
+                        <div class="callout {{ message.tags }}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Users Table -->
+                <div class="grid-x grid-margin-x">
+                    <div class="cell">
+                        <div class="table-scroll">
+                            {% if user_profiles %}
+                            <table class="hover">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Phone</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for profile in user_profiles %}
+                                    <tr>
+                                        <td>{{ profile.user.get_full_name }}</td>
+                                        <td>{{ profile.user.email }}</td>
+                                        <td>{{ profile.role.get_name_display|default:"No Role" }}</td>
+                                        <td>{{ profile.phone_number|default:"-" }}</td>
+                                        <td>
+                                            <span class="label {% if profile.is_active %}success{% else %}alert{% endif %}">
+                                                {% if profile.is_active %}Active{% else %}Inactive{% endif %}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'user_edit' profile.user.id %}" class="button small">Edit</a>
+                                            <a href="{% url 'user_delete' profile.user.id %}" class="button alert small">Delete</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            {% else %}
+                            <div class="callout warning">
+                                <p>No users found. {% if not organization %}Please make sure you are assigned to an organization.{% endif %}</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.dashboard-content {
+    padding: 1rem;
+}
+
+.callout {
+    border-radius: 5px;
+}
+
+.callout h3 {
+    margin: 0;
+    color: #1779ba;
+}
+
+.table-scroll {
+    margin-top: 1rem;
+}
+
+.label {
+    border-radius: 3px;
+    padding: 0.3rem 0.5rem;
+}
+
+.button.small {
+    margin: 0 0.2rem;
+    padding: 0.4rem 0.8rem;
+}
+
+.top-bar {
+    background: none;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+.top-bar h4 {
+    margin: 0;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,141 @@
+{% extends "core/base.html" %}
+{% load static %}
+
+{% block title %}Manage Permissions{% endblock %}
+
+{% block content %}
+<div class="grid-x">
+    <!-- Include Sidebar -->
+    {% include "sidebar.html" %}
+
+    <!-- Main Content -->
+    <div class="cell large-10 large-offset-2">
+        <div class="top-bar">
+            <div class="top-bar-left">
+                <h4>Manage Permissions</h4>
+            </div>
+            <div class="top-bar-right">
+                <input type="search" placeholder="Search" class="search-input">
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="grid-container">
+                <div class="grid-x grid-padding-x">
+                    <!-- Add Permission Form -->
+                    <div class="cell medium-4">
+                        <div class="callout">
+                            <h5>Add New Permission</h5>
+                            <form method="post" data-abide novalidate>
+                                {% csrf_token %}
+                                
+                                <label>
+                                    Name
+                                    <span class="required">*</span>
+                                    <input type="text" name="name" value="{{ form.name.value|default:'' }}" required>
+                                </label>
+                                {% if form.name.errors %}
+                                <span class="form-error is-visible">{{ form.name.errors.0 }}</span>
+                                {% endif %}
+
+                                <label>
+                                    Codename
+                                    <span class="required">*</span>
+                                    <input type="text" name="codename" value="{{ form.codename.value|default:'' }}" required>
+                                </label>
+                                {% if form.codename.errors %}
+                                <span class="form-error is-visible">{{ form.codename.errors.0 }}</span>
+                                {% endif %}
+
+                                <label>
+                                    Description
+                                    <textarea name="description" rows="3">{{ form.description.value|default:'' }}</textarea>
+                                </label>
+                                {% if form.description.errors %}
+                                <span class="form-error is-visible">{{ form.description.errors.0 }}</span>
+                                {% endif %}
+
+                                <button type="submit" class="button primary expanded">Add Permission</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Permissions List -->
+                    <div class="cell medium-8">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title">Permissions</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack hover">
+                                    <thead>
+                                        <tr>
+                                            <th width="30"><input type="checkbox" class="checkbox"></th>
+                                            <th>Name</th>
+                                            <th>Codename</th>
+                                            <th>Description</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for permission in permissions %}
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>{{ permission.name }}</td>
+                                            <td><code>{{ permission.codename }}</code></td>
+                                            <td>{{ permission.description|truncatewords:10 }}</td>
+                                            <td>
+                                                <a href="#" class="edit-link" data-open="editModal{{ permission.pk }}">Edit</a>
+                                                <a href="#" class="delete-link" data-open="deleteModal{{ permission.pk }}">Delete</a>
+                                            </td>
+                                        </tr>
+                                        {% empty %}
+                                        <tr>
+                                            <td colspan="5" class="text-center">No permissions found.</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.edit-link, .delete-link {
+    color: #1779ba;
+    text-decoration: none;
+    margin-right: 1rem;
+}
+
+.edit-link:hover, .delete-link:hover {
+    text-decoration: underline;
+}
+
+.delete-link {
+    color: #cc4b37;
+}
+
+code {
+    background: #f8f8f8;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9rem;
+}
+
+.search-input {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    width: 300px;
+}
+</style>
+{% endblock %} 

@@ -1,0 +1,315 @@
+{% extends "dashboard/base_dashboard.html" %}
+{% load static %}
+
+{% block dashboard_title %}Dashboard{% endblock %}
+
+{% block sidebar_items %}
+    <li><a href="#" class="active"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    <li><a href="#"><i class="fas fa-building"></i> Locations & Buildings</a></li>
+    <li><a href="#"><i class="fas fa-chart-bar"></i> Reports</a></li>
+    <li><a href="#"><i class="fas fa-clipboard-check"></i> Compliance</a></li>
+    <li><a href="#"><i class="fas fa-cog"></i> Organization Settings</a></li>
+    <li class="menu-section">
+        <span class="menu-header">Waste Management</span>
+        <ul class="submenu">
+            <li><a href="{% url 'waste_generator_list' %}"><i class="fas fa-recycle"></i> Waste Generators</a></li>
+            <li><a href="{% url 'waste_collector_list' %}"><i class="fas fa-truck"></i> Waste Collectors</a></li>
+            <li><a href="{% url 'waste_type_list' %}"><i class="fas fa-trash"></i> Waste Types</a></li>
+        </ul>
+    </li>
+    <li><a href="#"><i class="fas fa-users"></i> User Management</a></li>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="grid-container fluid">
+    <!-- Date Range Selector -->
+    <div class="grid-x grid-margin-x align-right margin-bottom-1">
+        <div class="cell shrink">
+            <div class="input-group">
+                <input type="text" class="input-group-field" placeholder="date range begin - date range end">
+                <div class="input-group-button">
+                    <input type="text" class="input-group-field" placeholder="mm/dd/yyyy">
+                    <button class="button clear"><i class="fas fa-calendar"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Waste Stats -->
+    <div class="grid-x grid-margin-x">
+        <div class="cell">
+            <h5>Total Waste to geitest6</h5>
+            <div class="stat-card">
+                <span class="stat-value">#lbs.</span>
+                <span class="stat-change success">
+                    <i class="fas fa-arrow-up"></i> 3%
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Waste Metrics -->
+    <div class="grid-x grid-margin-x grid-margin-y">
+        <div class="cell medium-4">
+            <div class="metric-card">
+                <h6>Total Waste Recovered</h6>
+                <div class="metric-value">
+                    <span class="value">#lbs.</span>
+                    <span class="change success">
+                        <i class="fas fa-arrow-up"></i> 3%
+                    </span>
+                </div>
+                <div class="metric-date">Last Updated: 1/10/2025</div>
+            </div>
+        </div>
+        <div class="cell medium-4">
+            <div class="metric-card">
+                <h6>Food Recovery</h6>
+                <div class="metric-value">
+                    <span class="value">#lbs.</span>
+                    <span class="change success">
+                        <i class="fas fa-arrow-up"></i> 3%
+                    </span>
+                </div>
+                <div class="metric-date">Last Updated: 1/10/2025</div>
+            </div>
+        </div>
+        <div class="cell medium-4">
+            <div class="metric-card">
+                <h6>Compost</h6>
+                <div class="metric-value">
+                    <span class="value">#lbs.</span>
+                    <span class="change success">
+                        <i class="fas fa-arrow-up"></i> 3%
+                    </span>
+                </div>
+                <div class="metric-date">Last Updated: 1/10/2025</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Compliance Overview -->
+    <div class="grid-x grid-margin-x">
+        <div class="cell">
+            <div class="compliance-section">
+                <div class="section-header">
+                    <h5>Waste Compliance Overview</h5>
+                    <div class="header-actions">
+                        <button class="button secondary small">Send Audit</button>
+                        <div class="search-box">
+                            <input type="text" placeholder="Search" class="search-input">
+                        </div>
+                    </div>
+                </div>
+                <table class="hover compliance-table">
+                    <thead>
+                        <tr>
+                            <th width="30"><input type="checkbox"></th>
+                            <th>Waste Location</th>
+                            <th>Waste Volume</th>
+                            <th>Collected Location</th>
+                            <th>Waste Collected</th>
+                            <th>Compliance Status</th>
+                            <th>Audit Status</th>
+                            <th>Audit Reports</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>Downtown Center 1</td>
+                            <td>200 lbs.<br><small>Compost</small></td>
+                            <td>Compost Facility</td>
+                            <td>January 10, 2025</td>
+                            <td><span class="label alert">Not Compliant</span></td>
+                            <td>Last Audit<br><small>January 10, 2025</small></td>
+                            <td><a href="#" class="button clear small">View Report</a></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>Downtown Center 2</td>
+                            <td>200 lbs.<br><small>Compost</small></td>
+                            <td>Compost Facility</td>
+                            <td>January 10, 2025</td>
+                            <td><span class="label alert">Not Compliant</span></td>
+                            <td>Last Audit<br><small>January 10, 2025</small></td>
+                            <td><a href="#" class="button clear small">View Report</a></td>
+                        </tr>
+                        <tr>
+                            <td><input type="checkbox"></td>
+                            <td>Downtown Center 3</td>
+                            <td>200 lbs.<br><small>Compost</small></td>
+                            <td>Compost Facility</td>
+                            <td>January 10, 2025</td>
+                            <td><span class="label success">Compliant</span></td>
+                            <td>Last Audit<br><small>January 10, 2025</small></td>
+                            <td><a href="#" class="button clear small">View Report</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Date Range Styles */
+.input-group {
+    margin-bottom: 0;
+}
+
+.input-group .button.clear {
+    background: transparent;
+    color: #1779ba;
+}
+
+/* Stat Card Styles */
+.stat-card {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #87bf7e;
+    margin-right: 1rem;
+}
+
+.stat-change {
+    font-size: 1rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: #e6f3e6;
+}
+
+.stat-change.success {
+    color: #3adb76;
+}
+
+/* Metric Card Styles */
+.metric-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.metric-card h6 {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.metric-value {
+    margin-bottom: 0.5rem;
+}
+
+.metric-value .value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.metric-value .change {
+    font-size: 0.9rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background: #e6f3e6;
+}
+
+.metric-value .change.success {
+    color: #3adb76;
+}
+
+.metric-date {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Compliance Section Styles */
+.compliance-section {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 4px;
+    margin-top: 2rem;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-box {
+    position: relative;
+}
+
+.search-input {
+    margin: 0;
+    border-radius: 20px;
+    padding-left: 1rem;
+}
+
+.compliance-table {
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.compliance-table th {
+    background: #f8f8f8;
+    border-bottom: 2px solid #e6e6e6;
+}
+
+.compliance-table td {
+    vertical-align: middle;
+}
+
+.label {
+    padding: 0.3rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.label.success {
+    background-color: #3adb76;
+}
+
+.label.alert {
+    background-color: #cc4b37;
+}
+
+/* Menu Section Styles */
+.menu-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e6e6e6;
+}
+
+.menu-header {
+    font-size: 0.8rem;
+    color: #666;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    display: block;
+}
+
+.submenu {
+    list-style: none;
+    margin: 0;
+    padding-left: 1rem;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %} 

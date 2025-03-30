@@ -1,0 +1,57 @@
+{% extends "core/base.html" %}
+
+{% block page_title %}Organization Settings{% endblock %}
+
+{% block core_content %}
+<div class="table-container">
+    <div class="grid-x">
+        <div class="cell large-12">
+            <div class="callout">
+                <div class="dashboard-callout">
+                    <div class="grid-x grid-margin-y small-up-1">
+                        <div class="cell">
+                            <span class="sub-title">Organization Settings</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-x grid-margin-x">
+                    <div class="cell medium-8 large-6">
+                        <form method="post">
+                            {% csrf_token %}
+                            
+                            {% for field in form %}
+                            <div class="grid-x grid-margin-x">
+                                <div class="cell">
+                                    <label>
+                                        {{ field.label }}
+                                        {% if field.field.required %}
+                                            <span class="required">*</span>
+                                        {% endif %}
+                                        {{ field }}
+                                        {% if field.errors %}
+                                            {% for error in field.errors %}
+                                                <span class="form-error is-visible">{{ error }}</span>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% if field.help_text %}
+                                            <p class="help-text">{{ field.help_text }}</p>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            <div class="grid-x grid-margin-x">
+                                <div class="cell">
+                                    <button type="submit" class="button pill">Save Changes</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,42 @@
+{% extends "core/base.html" %}
+
+{% block core_content %}
+<div class="grid-x grid-margin-x">
+    <div class="cell medium-8 large-6">
+        <h2>{{ title }}</h2>
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="grid-x grid-margin-x">
+                <div class="cell">
+                    <label>
+                        {{ field.label }}
+                        {% if field.field.required %}
+                            <span class="required">*</span>
+                        {% endif %}
+                        {{ field }}
+                        {% if field.errors %}
+                            {% for error in field.errors %}
+                                <span class="form-error is-visible">{{ error }}</span>
+                            {% endfor %}
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="help-text">{{ field.help_text }}</p>
+                        {% endif %}
+                    </label>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="grid-x grid-margin-x">
+                <div class="cell">
+                    <button type="submit" class="button">Save</button>
+                    <a href="{% url 'waste_collector_list' %}" class="button secondary">Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %} 

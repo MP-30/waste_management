@@ -1,0 +1,37 @@
+{% extends "core/base.html" %}
+
+{% block page_title %}Delete Waste Generator{% endblock %}
+
+{% block core_content %}
+<div class="table-container">
+    <div class="grid-x">
+        <div class="cell large-12">
+            <div class="callout">
+                <div class="dashboard-callout">
+                    <div class="grid-x grid-margin-y small-up-1">
+                        <div class="cell">
+                            <span class="sub-title">Delete Confirmation</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid-x grid-margin-x">
+                    <div class="cell medium-8 large-6">
+                        <div class="callout alert">
+                            <h4>Delete Waste Generator</h4>
+                            <p>Are you sure you want to delete the waste generator "{{ generator.name }}"?</p>
+                            <p>This action cannot be undone.</p>
+                            
+                            <form method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="button alert pill">Delete</button>
+                                <a href="{% url 'waste_generator_list' %}" class="button secondary pill">Cancel</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

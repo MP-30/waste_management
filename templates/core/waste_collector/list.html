@@ -1,0 +1,48 @@
+{% extends "core/base.html" %}
+
+{% block core_content %}
+<div class="grid-x grid-margin-x">
+    <div class="cell">
+        <div class="grid-x align-justify">
+            <div class="cell small-12 medium-6">
+                <h2>Waste Collectors</h2>
+            </div>
+            <div class="cell small-12 medium-6 text-right">
+                <a href="{% url 'waste_collector_add' %}" class="button">Add New Collector</a>
+            </div>
+        </div>
+
+        <table class="hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>License Number</th>
+                    <th>Contact Person</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for collector in collectors %}
+                <tr>
+                    <td>{{ collector.name }}</td>
+                    <td>{{ collector.license_number }}</td>
+                    <td>{{ collector.contact_person }}</td>
+                    <td>{{ collector.contact_email }}</td>
+                    <td>{{ collector.contact_phone }}</td>
+                    <td>
+                        <a href="{% url 'waste_collector_edit' collector.pk %}" class="button small">Edit</a>
+                        <a href="{% url 'waste_collector_delete' collector.pk %}" class="button alert small">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">No waste collectors found. <a href="{% url 'waste_collector_add' %}">Add one now</a>.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} 
