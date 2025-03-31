@@ -118,7 +118,7 @@ class UserForm(UserCreationForm):
     last_name = forms.CharField(max_length=30, required=True)
     email = forms.EmailField(required=True)
     phone_number = forms.CharField(max_length=20, required=True)
-    role = forms.ModelChoiceField(queryset=None, required=True)
+    role = forms.ModelChoiceField(queryset=UserRole.objects.all(), required=True)
     profile_pic = forms.ImageField(required=False)
     is_active = forms.BooleanField(initial=True, required=False)
 
@@ -128,8 +128,8 @@ class UserForm(UserCreationForm):
 
     def __init__(self, *args, organization=None, **kwargs):
         super().__init__(*args, **kwargs)
-        if organization:
-            self.fields['role'].queryset = UserRole.objects.filter(organization=organization)
+        # No need to filter roles by organization since they are global
+        self.fields['role'].queryset = UserRole.objects.all().order_by('name')
 
 class UserEditForm(forms.ModelForm):
     role = forms.ModelChoiceField(queryset=UserRole.objects.all(), required=False)

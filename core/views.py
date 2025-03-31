@@ -277,65 +277,124 @@ def user_dashboard(request):
 
 @login_required
 def user_add(request):
-    try:
+    # Get the organization context
+    organization = None
+    if hasattr(request.user, 'owned_organizations'):
+        organization = request.user.owned_organizations.first()
+    elif hasattr(request.user, 'profile'):
         organization = request.user.profile.organization
-        if not organization:
-            messages.error(request, "No organization assigned. Cannot add users.")
-            return redirect('user_dashboard')
 
-        if request.method == 'POST':
-            form = UserForm(request.POST, request.FILES, organization=organization)
-            if form.is_valid():
-                user = form.save(commit=False)
-                user.username = form.cleaned_data['email']  # Using email as username
-                user.save()
-                
-                # Create user profile
-                UserProfile.objects.create(
-                    user=user,
-                    organization=organization,
-                    role=form.cleaned_data['role'],
-                    phone_number=form.cleaned_data['phone_number'],
-                    profile_pic=form.cleaned_data['profile_pic'],
-                    is_active=form.cleaned_data['is_active']
-                )
-                messages.success(request, 'User created successfully.')
-                return redirect('user_dashboard')
-        else:
-            form = UserForm(organization=organization)
-        
-        return render(request, 'core/user/form.html', {'form': form, 'title': 'Add User'})
-    except UserProfile.DoesNotExist:
-        messages.error(request, "User profile not found. Please contact your administrator.")
+    if not organization:
+        messages.error(request, "No organization found.")
         return redirect('admin_dashboard')
+
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+
+            # Create user profile with organization context
+            UserProfile.objects.create(
+                user=user,
+                organization=organization,
+                role=form.cleaned_data['role'],  # This is the global role
+                phone_number=form.cleaned_data.get('phone_number', ''),
+                city=form.cleaned_data.get('city', ''),
+                pincode=form.cleaned_data.get('pincode', ''),
+                is_active=True
+            )
+
+            messages.success(request, 'User added successfully.')
+            return redirect('user_dashboard')
+    else:
+        form = UserForm()
+    
+    context = {
+        'form': form,
+        'title': 'Add User',
+        'organization': organization
+    }
+    return render(request, 'core/user/form.html', context)
 
 @login_required
 def user_edit(request, pk):
-    user = get_object_or_404(User, pk=pk)
+    # Get the organization context
+    organization = None
+    if hasattr(request.user, 'owned_organizations'):
+        organization = request.user.owned_organizations.first()
+    elif hasattr(request.user, 'profile'):
+        organization = request.user.profile.organization
+
+    if not organization:
+        messages.error(request, "No organization found.")
+        return redirect('admin_dashboard')
+
+    user_profile = get_object_or_404(UserProfile, pk=pk, organization=organization)
+    user = user_profile.user
+
     if request.method == 'POST':
-        form = UserEditForm(request.POST, request.FILES, instance=user)
+        form = UserEditForm(request.POST, instance=user)
         if form.is_valid():
-            form.save()
-            profile = user.profile
-            profile.role = form.cleaned_data.get('role')
-            profile.phone_number = form.cleaned_data.get('phone_number')
-            if form.cleaned_data.get('profile_pic'):
-                profile.profile_pic = form.cleaned_data.get('profile_pic')
-            profile.save()
+            user = form.save()
+            if form.cleaned_data.get('password'):
+                user.set_password(form.cleaned_data['password'])
+                user.save()
+
+            # Update user profile
+            user_profile.phone_number = form.cleaned_data.get('phone_number', '')
+            user_profile.city = form.cleaned_data.get('city', '')
+            user_profile.pincode = form.cleaned_data.get('pincode', '')
+            user_profile.is_active = form.cleaned_data.get('is_active', True)
+            user_profile.save()
+
             messages.success(request, 'User updated successfully.')
             return redirect('user_dashboard')
     else:
-        form = UserEditForm(instance=user)
-    return render(request, 'core/user/form.html', {'form': form, 'title': 'Edit User'})
+        form = UserEditForm(instance=user, initial={
+            'phone_number': user_profile.phone_number,
+            'city': user_profile.city,
+            'pincode': user_profile.pincode,
+            'is_active': user_profile.is_active
+        })
+
+    # Filter roles to only show roles from the current organization
+    form.fields['role'].queryset = UserRole.objects.filter(organization=organization)
+    
+    context = {
+        'form': form,
+        'title': 'Edit User',
+        'organization': organization
+    }
+    return render(request, 'core/user/form.html', context)
 
 @login_required
 def user_delete(request, pk):
-    user = get_object_or_404(User, pk=pk)
+    # Get the organization context
+    organization = None
+    if hasattr(request.user, 'owned_organizations'):
+        organization = request.user.owned_organizations.first()
+    elif hasattr(request.user, 'profile'):
+        organization = request.user.profile.organization
+
+    if not organization:
+        messages.error(request, "No organization found.")
+        return redirect('admin_dashboard')
+
+    user_profile = get_object_or_404(UserProfile, pk=pk, organization=organization)
+    user = user_profile.user
+
     if request.method == 'POST':
         user.delete()
         messages.success(request, 'User deleted successfully.')
         return redirect('user_dashboard')
-    return render(request, 'core/user/delete.html', {'user': user})
+
+    context = {
+        'user': user,
+        'organization': organization
+    }
+    return render(request, 'core/user/delete.html', context)
 
 @login_required
 def manage_role_permissions(request):

@@ -7,53 +7,51 @@
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png" alt="Google" style="max-width: 120px; margin: 1rem 0;">
         </div>
         
-        <!-- Navigation Menu -->
-        <ul class="vertical menu">
-            <li><a href="{% url 'admin_dashboard' %}" {% if request.resolver_match.url_name == 'admin_dashboard' %}class="active"{% endif %}>Dashboard</a></li>
-            <li><a href="#">Locations & Buildings</a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Compliance</a></li>
-            <li><a href="#">Modal Template</a></li>
+        <ul class="menu vertical">
+            <li class="logo" style="background: url(https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Google_2015_logo.svg/800px-Google_2015_logo.svg.png) no-repeat center;"></li>
+            <li class="{% if request.resolver_match.url_name == 'admin_dashboard' %}selected{% endif %}">
+                <a href="{% url 'admin_dashboard' %}">Dashboard</a>
+            </li>
             
             <!-- User Management Section -->
             <li class="menu-section-label">User Management</li>
-            <li><a href="{% url 'user_dashboard' %}" {% if request.resolver_match.url_name == 'user_dashboard' %}class="active"{% endif %}>
-                <i class="fas fa-users"></i> Users List
-            </a></li>
-            <li><a href="{% url 'user_add' %}" {% if request.resolver_match.url_name == 'user_add' %}class="active"{% endif %}>
-                <i class="fas fa-user-plus"></i> Add User
-            </a></li>
-            <li><a href="{% url 'role_list' %}" {% if request.resolver_match.url_name == 'role_list' %}class="active"{% endif %}>
-                <i class="fas fa-user-tag"></i> Manage Roles
-            </a></li>
-            <li><a href="{% url 'manage_permissions' %}" {% if request.resolver_match.url_name == 'manage_permissions' %}class="active"{% endif %}>
-                <i class="fas fa-key"></i> Manage Permissions
-            </a></li>
+            <li class="{% if request.resolver_match.url_name == 'user_dashboard' %}selected{% endif %}">
+                <a href="{% url 'user_dashboard' %}">
+                    <i class="fas fa-users"></i> Users List
+                </a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'user_add' %}selected{% endif %}">
+                <a href="{% url 'user_add' %}">
+                    <i class="fas fa-user-plus"></i> Add User
+                </a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'role_list' %}selected{% endif %}">
+                <a href="{% url 'role_list' %}">
+                    <i class="fas fa-user-tag"></i> Manage Roles
+                </a>
+            </li>
             
-            <!-- Other Management Links -->
+            <!-- Waste Management Section -->
             <li class="menu-section-label">Waste Management</li>
-            <li><a href="{% url 'waste_generator_dashboard' %}" {% if 'waste-generators' in request.path %}class="active"{% endif %}>
-                <i class="fas fa-recycle"></i> Waste Generator
-            </a></li>
-            <li><a href="{% url 'waste_collector_list' %}" {% if 'waste-collectors' in request.path %}class="active"{% endif %}>
-                <i class="fas fa-truck"></i> Waste Collector
-            </a></li>
-            <li><a href="#">
-                <i class="fas fa-file-contract"></i> Agreements
-            </a></li>
-            <li><a href="#">
-                <i class="fas fa-box"></i> Commodity
-            </a></li>
+            <li class="{% if request.resolver_match.url_name == 'waste_generator_dashboard' %}selected{% endif %}">
+                <a href="{% url 'waste_generator_dashboard' %}">
+                    <i class="fas fa-trash"></i> Waste Generators
+                </a>
+            </li>
+            <li class="{% if request.resolver_match.url_name == 'waste_collector_list' %}selected{% endif %}">
+                <a href="{% url 'waste_collector_list' %}">
+                    <i class="fas fa-truck"></i> Waste Collectors
+                </a>
+            </li>
+            
+            <!-- Settings Section -->
+            <li class="menu-section-label">Settings</li>
+            <li class="{% if request.resolver_match.url_name == 'organization_settings' %}selected{% endif %}">
+                <a href="{% url 'organization_settings' %}">
+                    <i class="fas fa-cog"></i> Organization Settings
+                </a>
+            </li>
         </ul>
-
-        <!-- Updates Section -->
-        <div class="updates-section">
-            <h6><i class="fas fa-bell"></i> Updates</h6>
-            <div class="update-item">
-                <span class="update-badge">New</span>
-                <p>System maintenance scheduled for next week.</p>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -86,7 +84,8 @@
     background-color: #f0f0f0;
 }
 
-.sidebar .menu a.active {
+.sidebar .menu a.active,
+.sidebar .menu li.selected a {
     background-color: #1779ba;
     color: white;
 }

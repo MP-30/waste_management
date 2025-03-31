@@ -2,12 +2,16 @@
 
 {% block content %}
 {% include 'sidebar.html' %}
+
 <div class="grid-x">
     <div class="cell large-10 large-offset-2">
+        <!-- Top Bar -->
         <div class="top-bar">
             <div class="top-bar-left">
                 <ul class="dropdown menu" data-dropdown-menu>
-                    <li style="margin: 0px;"><p class="h6">{% block page_title %}Waste Management{% endblock %}</p></li>
+                    <li><p class="h6">{% block page_title %}Dashboard{% endblock %}</p></li>
+                    <li class="hide"><p class="h6">Downtown Center 1 <small class="sub">Last Audit: <span>January 10, 2025</span></small></p></li>
+                    <li class="hide"><a href="about.html" class="button pill small black">Send Audit</a></li>
                 </ul>
             </div>
             <div class="top-bar-right">
@@ -22,11 +26,12 @@
                             </ul>
                         </div>
                     </li>
-                    <li><button class="menu-icon" type="button" data-open="offCanvas" style="margin-top: 5px;"></button></li>
+                    <li><button class="menu-icon" type="button" data-open="offCanvas"></button></li>
                 </ul>
             </div>
         </div>
 
+        <!-- Dashboard Content -->
         <div class="dashboard-content">
             {% if messages %}
                 {% for message in messages %}
@@ -39,8 +44,102 @@
                 {% endfor %}
             {% endif %}
 
+            <!-- Main Dashboard Content Block -->
+            <div class="grid-x grid-margin-x">
+                <div class="cell large-6">
+                    <div class="dashboard-callout">
+                        <span class="sub-title">Total Waste to Landfill</span>
+                        <p class="h1"><span class="lbs">#</span><span class="label decrease percentage">3%</span></p>
+                    </div>
+                </div>
+                <div class="cell large-6" style="align-self: flex-end;">
+                    <ul class="menu float-right">
+                        <li><span>Date Range: </span><span>Start - End</span></li>
+                        <li><input type="date"></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Equalized Grid Sections -->
+            <div class="grid-x grid-margin-x grid-padding-y small-up-1 large-up-3" data-equalizer>
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <span class="sub-title">Total Waste Recovered</span>
+                        <p class="lead">#</p>
+                        <small class="updated-date">1/10/2025</small>
+                        <span class="label decrease percentage fixed">3%</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <span class="sub-title">Food Recovery</span>
+                        <p class="lead">#</p>
+                        <small class="updated-date">1/10/2025</small>
+                        <span class="label decrease percentage fixed">3%</span>
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="callout" data-equalizer-watch>
+                        <span class="sub-title">Compost</span>
+                        <p class="lead">#</p>
+                        <small class="updated-date">1/10/2025</small>
+                        <span class="label decrease percentage fixed">3%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
+                            <div class="dashboard-callout">
+                                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                                    <div class="cell">
+                                        <span class="sub-title">Waste Compliance Overview</span>
+                                        <a href="#" class="button small pill secondary">Send Audit</a>
+                                    </div>
+                                    <div class="cell">
+                                        <input type="search" placeholder="Search" class="pill" style="width: 50%; float: right;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table">
+                                <table class="stack">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox"></th>
+                                            <th>Waste Location</th>
+                                            <th>Waste Volume</th>
+                                            <th>Collected Location</th>
+                                            <th>Waste Collected</th>
+                                            <th>Compliance Status</th>
+                                            <th>Audit Status</th>
+                                            <th>Audit Reports</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><input type="checkbox"></td>
+                                            <td>Downtown Center 1</td>
+                                            <td><span class="lbs">200</span><span class="sub">Compost</span></td>
+                                            <td>Compost Facility</td>
+                                            <td>January 10, 2025</td>
+                                            <td class="status not-compliant"></td>
+                                            <td>Last Audit: January 10, 2025</td>
+                                            <td><a href="#">View Report</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% block core_content %}{% endblock %}
         </div>
     </div>
 </div>
-{% endblock %} 
+
+{% endblock %}

@@ -109,6 +109,16 @@ def user_login(request):
             # First check if user is an organization owner (admin)
             is_admin = Organization.objects.filter(owner=user).exists()
             if is_admin:
+                # Create or get core profile for admin
+                from core.models import UserProfile as CoreUserProfile
+                organization = Organization.objects.filter(owner=user).first()
+                CoreUserProfile.objects.get_or_create(
+                    user=user,
+                    defaults={
+                        'organization': organization,
+                        'is_active': True
+                    }
+                )
                 return redirect('admin_dashboard')
             
             # If not admin, check for role-based access
@@ -143,6 +153,16 @@ def dashboard(request):
     # First check if user is an organization owner (admin)
     is_admin = Organization.objects.filter(owner=request.user).exists()
     if is_admin:
+        # Create or get core profile for admin
+        from core.models import UserProfile as CoreUserProfile
+        organization = Organization.objects.filter(owner=request.user).first()
+        CoreUserProfile.objects.get_or_create(
+            user=request.user,
+            defaults={
+                'organization': organization,
+                'is_active': True
+            }
+        )
         return redirect('admin_dashboard')
     
     # If not admin, check for role-based access

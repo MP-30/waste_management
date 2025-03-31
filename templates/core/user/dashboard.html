@@ -12,7 +12,7 @@
     <div class="cell large-10 large-offset-2">
         <div class="top-bar">
             <div class="top-bar-left">
-                <h4>User Management</h4>
+                <h4>User Dashboard</h4>
             </div>
             <div class="top-bar-right">
                 <a href="{% url 'user_add' %}" class="button primary">Add User</a>
@@ -20,81 +20,66 @@
         </div>
 
         <div class="dashboard-content">
-            <div class="grid-container">
-                <!-- Stats Cards -->
-                <div class="grid-x grid-margin-x grid-margin-y">
-                    <div class="cell small-12 medium-4">
-                        <div class="callout">
-                            <h5>Total Users</h5>
-                            <h3>{{ total_users }}</h3>
-                        </div>
+            <div class="callout">
+                <div class="grid-x grid-margin-y small-up-1 medium-up-2">
+                    <div class="cell">
+                        <span class="sub-title">Users</span>
                     </div>
-                    <div class="cell small-12 medium-4">
-                        <div class="callout">
-                            <h5>Active Users</h5>
-                            <h3>{{ active_users }}</h3>
-                        </div>
-                    </div>
-                    <div class="cell small-12 medium-4">
-                        <div class="callout">
-                            <h5>Total Roles</h5>
-                            <h3>{{ total_roles }}</h3>
-                        </div>
+                    <div class="cell">
+                        <input type="search" placeholder="Search" class="pill" style="width: 50%; float: right;">
                     </div>
                 </div>
+            </div>
 
-                <!-- Messages -->
-                {% if messages %}
-                <div class="grid-x grid-margin-x">
-                    <div class="cell">
-                        {% for message in messages %}
-                        <div class="callout {{ message.tags }}">
-                            {{ message }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% endif %}
-
-                <!-- Users Table -->
-                <div class="grid-x grid-margin-x">
-                    <div class="cell">
-                        <div class="table-scroll">
+            <div class="table-container">
+                <div class="grid-x">
+                    <div class="cell large-12">
+                        <div class="callout">
                             {% if user_profiles %}
-                            <table class="hover">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Phone</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for profile in user_profiles %}
-                                    <tr>
-                                        <td>{{ profile.user.get_full_name }}</td>
-                                        <td>{{ profile.user.email }}</td>
-                                        <td>{{ profile.role.get_name_display|default:"No Role" }}</td>
-                                        <td>{{ profile.phone_number|default:"-" }}</td>
-                                        <td>
-                                            <span class="label {% if profile.is_active %}success{% else %}alert{% endif %}">
-                                                {% if profile.is_active %}Active{% else %}Inactive{% endif %}
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a href="{% url 'user_edit' profile.user.id %}" class="button small">Edit</a>
-                                            <a href="{% url 'user_delete' profile.user.id %}" class="button alert small">Delete</a>
-                                        </td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                            <div class="table">
+                                <table class="stack">
+                                    <thead>
+                                        <tr>
+                                            <th><input type="checkbox" class="checkbox"></th>
+                                            <th>First Name</th>
+                                            <th>Last Name</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Profile Pic</th>
+                                            <th>Created Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for profile in user_profiles %}
+                                        <tr>
+                                            <td><input type="checkbox" class="checkbox"></td>
+                                            <td>{{ profile.user.first_name }}</td>
+                                            <td>{{ profile.user.last_name }}</td>
+                                            <td>{{ profile.user.email }}</td>
+                                            <td>{{ profile.phone_number|default:"-" }}</td>
+                                            <td>{{ profile.role.get_name_display|default:"No Role" }}</td>
+                                            <td>
+                                                <span class="label {% if profile.is_active %}success{% else %}alert{% endif %}">
+                                                    {% if profile.is_active %}Active{% else %}Inactive{% endif %}
+                                                </span>
+                                            </td>
+                                            <td>--</td>
+                                            <td>{{ profile.created_date|date:"d/m/Y" }}</td>
+                                            <td>
+                                                <a href="{% url 'user_edit' profile.user.id %}" class="button small">Edit</a>
+                                                <a href="{% url 'user_delete' profile.user.id %}" class="button alert small">Delete</a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
                             {% else %}
                             <div class="callout warning">
-                                <p>No users found. {% if not organization %}Please make sure you are assigned to an organization.{% endif %}</p>
+                                <p>No users found.</p>
                             </div>
                             {% endif %}
                         </div>
@@ -114,12 +99,7 @@
     border-radius: 5px;
 }
 
-.callout h3 {
-    margin: 0;
-    color: #1779ba;
-}
-
-.table-scroll {
+.table-container {
     margin-top: 1rem;
 }
 
@@ -142,5 +122,17 @@
 .top-bar h4 {
     margin: 0;
 }
+
+.pill {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    border: 1px solid #e6e6e6;
+}
+
+.sub-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #1779ba;
+}
 </style>
-{% endblock %} 
+{% endblock %}
